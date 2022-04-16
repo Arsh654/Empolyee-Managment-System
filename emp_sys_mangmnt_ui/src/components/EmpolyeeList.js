@@ -34,6 +34,21 @@ const EmpolyeeList = () => {
     fetchData();
   }, []);
 
+  //Delete Employee logic....creating here as we want to reflect the changes in this compo as well
+  //method signature is defiend in the Employee Class...child class.
+  const deleteEmployee = (e, id) => {
+    e.preventDefault();
+    EmployeeService.deleteEmployee(id).then((res) => {
+      //need to delete the employee from the list of employees.
+      console.log(res);
+      if (employees) {
+        setEmployees((prevEle) => {
+          return prevEle.filter((employee) => employee.id !== id);
+        });
+      }
+    });
+  };
+
   return (
     <div className="container mx-auto my-6 ">
       {/* 1. Create a button For adding the New Entry for the employee */}
@@ -60,7 +75,7 @@ const EmpolyeeList = () => {
               <th className="text-left font-thick text-slate-800 uppercase tracking-wider px-6 py-2">
                 Email Id
               </th>
-              <th className="text-right font-thick text-slate-800 uppercase tracking-wider px-6 py-2">
+              <th className="text-right font-thick text-slate-800 uppercase tracking-wider px-16 py-2">
                 Action
               </th>
             </tr>
@@ -69,7 +84,11 @@ const EmpolyeeList = () => {
           {!loading && (
             <tbody className="bg-white">
               {employees.map((employee) => (
-                <Employee employee={employee}></Employee>
+                <Employee
+                  employee={employee}
+                  deleteEmployee={deleteEmployee}
+                  key={employee.id}
+                ></Employee>
                 // above condition is the props condition.
                 //since employess is an array of objects we need to pass the employee object to the Employee component.
                 //Employee is the child component of EmpolyeeList. so we define the property as employee. in the <Employee> tag as

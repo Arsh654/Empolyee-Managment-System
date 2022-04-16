@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import EmployeeService from "../services/EmployeeService";
 
 const AddEmpolyee = () => {
+  const navigate = useNavigate();
+
   const [employee, setEmployee] = useState({
     id: "",
     firstName: "",
@@ -23,6 +26,8 @@ const AddEmpolyee = () => {
     EmployeeService.saveEmployee(employee)
       .then((response) => {
         console.log(response);
+        //navigate to the list of employees page.
+        navigate("/employeeList");
       })
       .catch((error) => {
         console.log(error);
